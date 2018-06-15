@@ -3,7 +3,9 @@ package example.dokemonster;
 import android.app.Activity;
 import android.content.Intent;
 import android.media.MediaPlayer;
+import android.os.AsyncTask;
 import android.os.Bundle;
+import android.os.Handler;
 import android.view.KeyEvent;
 import android.view.MotionEvent;
 import android.view.View;
@@ -21,6 +23,8 @@ public class PlayActivity extends Activity {
     private TextLCD textLCD;
     private ImageOLED imageOLED;
     private Segment segment;
+    private DotMatrix dotmatrix;
+    private FullLED fullLED;
 
     private int score = 0;
     private int input_flag = 0;
@@ -204,23 +208,23 @@ public class PlayActivity extends Activity {
             num.add(i + 1);
         }
 
+
+        segment = new Segment();
+        imageOLED = new ImageOLED(PlayActivity.this);
+        dotmatrix = new DotMatrix();
+        fullLED = new FullLED();
+
         start.setOnClickListener(
                 new Button.OnClickListener() {
                     public void onClick(View v) {
+                        // 안되지롱 꺼지지롱 고쳐야 하지롱
+                        //segment.UpdateValue(score);
 
                         simpleLED = new SimpleLED();
-                        simpleLED.UpdateValue(stage_cnt + 1);
+                        simpleLED.display(stage_cnt + 1);
 
                         textLCD = new TextLCD();
                         textLCD.UpdateValue(stage_cnt + 1);
-
-                        // 안되지롱 꺼지지롱 고쳐야 하지롱
-//                        segment = new Segment();
-//                        segment.UpdateValue(score);
-
-                        // 안되지롱 꺼지지롱 고쳐야 하지롱
-                        imageOLED = new ImageOLED(PlayActivity.this);
-                        imageOLED.UpdateValue(stage_cnt + 1);
 
                         //일정 시간마다 랜덤수 발생 & board 배경이미지로 초기화
                         //랜덤수는 정답배열에 따로 저장해둠
@@ -242,7 +246,16 @@ public class PlayActivity extends Activity {
                         submit_num.clear();
                         cur_input = 0;
 
+                        DisplayDotMatrix dotmatrixhandler = new DisplayDotMatrix();
+                        dotmatrixhandler.execute("Go!");
+
+
                         playGame(findStage(stage_cnt));
+
+
+                        DisplayImage oledhandler = new DisplayImage();
+                        oledhandler.execute(stage_cnt);
+
                     }
                 }
         );
@@ -269,6 +282,13 @@ public class PlayActivity extends Activity {
         enable(false);
         input_flag = 0;
         score -= 50;
+
+        DisplayDotMatrix dotmatrixhandler = new DisplayDotMatrix();
+        dotmatrixhandler.execute("Fail!");
+
+        DisplayFullLED fullledhandler = new DisplayFullLED();
+        fullledhandler.execute(1);
+
         final TimerTask timerTask2 = new TimerTask() {
             @Override
             public void run() {
@@ -306,18 +326,28 @@ public class PlayActivity extends Activity {
         input_bg.setImageResource(R.drawable.input_correct);
         stage_cnt++;
 
+        DisplayDotMatrix handler = new DisplayDotMatrix();
+        handler.execute("Correct!");
+
         if (stage_cnt == 3) {
             effectSound(R.raw.stage_up);
+            DisplayFullLED fullledhandler = new DisplayFullLED();
+            fullledhandler.execute(3);
             stage.setImageResource(R.drawable.stage_2);
         } else if (stage_cnt == 6) {
             effectSound(R.raw.stage_up);
+            DisplayFullLED fullledhandler = new DisplayFullLED();
+            fullledhandler.execute(3);
             stage.setImageResource(R.drawable.stage_3);
         } else if (stage_cnt == 9) {
             // end activity로 전환
+            effectSound(R.raw.stage_up);
             Intent intent = new Intent(PlayActivity.this, EndActivity.class);
             startActivity(intent);
         } else {
             effectSound(R.raw.win);
+            DisplayFullLED fullledhandler = new DisplayFullLED();
+            fullledhandler.execute(2);
         }
     }
 
@@ -623,8 +653,27 @@ public class PlayActivity extends Activity {
         return false;
     }
 
+    private class DisplayDotMatrix extends AsyncTask<String, Void, Void> {
+        @Override
+        protected Void doInBackground(String... strings) {
+            dotmatrix.display(strings[0]);
+            return null;
+        }
+    }
 
+    private class DisplayImage extends AsyncTask<Integer, Void, Void>{
+        @Override
+        protected Void doInBackground(Integer... integers) {
+            imageOLED.display(integers[0] + 1);
+            return null;
+        }
+    }
+
+    private class DisplayFullLED extends AsyncTask<Integer, Void, Void>{
+        @Override
+        protected Void doInBackground(Integer... integers) {
+            fullLED.display(integers[0]);
+            return null;
+        }
+    }
 }
-
-
-

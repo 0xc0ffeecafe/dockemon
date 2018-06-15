@@ -13,27 +13,11 @@ extern "C" {
 #endif
 /*
  * Class:     example_dokemonster_SimpleLED
- * Method:    Open
- * Signature: ()Z
- */
-JNIEXPORT jboolean JNICALL Java_example_dokemonster_SimpleLED_Open
-  (JNIEnv *, jobject);
-
-/*
- * Class:     example_dokemonster_SimpleLED
- * Method:    TurnOn
+ * Method:    simpleLEDControl
  * Signature: (I)Z
  */
-JNIEXPORT jboolean JNICALL Java_example_dokemonster_SimpleLED_TurnOn
+JNIEXPORT jboolean JNICALL Java_example_dokemonster_SimpleLED_simpleLEDControl
   (JNIEnv *, jobject, jint);
-
-/*
- * Class:     example_dokemonster_SimpleLED
- * Method:    TurnOffAll
- * Signature: ()Z
- */
-JNIEXPORT jboolean JNICALL Java_example_dokemonster_SimpleLED_TurnOffAll
-  (JNIEnv *, jobject);
 
 #ifdef __cplusplus
 }

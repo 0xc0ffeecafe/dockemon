@@ -15,20 +15,8 @@ extern "C" {
  * Method:    open
  * Signature: ()Z
  */
-JNIEXPORT jboolean JNICALL Java_example_dokemonster_ImageOLED_open
-  (JNIEnv *, jobject);
+JNIEXPORT void JNICALL
+Java_example_dokemonster_ImageOLED_OLEDControl(JNIEnv *env, jobject instance, jint num);
 
-/*
- * Class:     example_dokemonster_ImageOLED
- * Method:    Control
- * Signature: ([I)V
- */
-JNIEXPORT void JNICALL Java_example_dokemonster_ImageOLED_Control
-  (JNIEnv *, jobject, jintArray);
-
-JNIEXPORT jboolean JNICALL Java_example_dokemonster_ImageOLED_close
-        (JNIEnv *, jobject);
-#ifdef __cplusplus
 }
-#endif
 #endif
