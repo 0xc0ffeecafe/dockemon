@@ -1,12 +1,12 @@
-#Docke'Mon
-1. Summary
+# Docke'Mon
+A. Summary
 	Docke'Mon project based on HBE-SM5-S4210 board
 	DKU Internet/Mobile Programming Course, 2018
 
-2. Demo Video
+B. Demo Video
 	Video: https://youtu.be/MNNdUCwnxZc
 
-3. Used Hardware Components
+C. Used Hardware Components
 
 	- LED, TextLCD: To display status of current stage
 	- OLED: To display stage image
