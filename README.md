@@ -1,4 +1,4 @@
-# Docke'Mon
+# Docke'mon
 DKU Internet/Mobile Programming Course (Semester 1, 2018)
 1. Summary
 	- Docke'mon project based on HBE-SM5-S4210 board
